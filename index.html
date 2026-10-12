@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InternCertify - Verified Certificate Portal</title>
+  <meta name="description"
+    content="Official InternCertify credential verification portal. Authenticate internship completion certificates securely.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@700;800&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Background Ambience -->
+  <div class="bg-pattern" aria-hidden="true"></div>
+  <div class="glow-orb glow-top" aria-hidden="true"></div>
+  <div class="glow-orb glow-bottom" aria-hidden="true"></div>
+
+  <!-- Mobile-first App Wrapper -->
+  <div class="app-container">
+
+    <!-- 1. Header: Brand Logo on Left & Hamburger Menu on Right -->
+    <header class="site-header" id="main-header">
+      <div class="brand-group">
+        <a href="index.html" class="brand-link" aria-label="InternCertify Home">
+          <div class="brand-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L3 6V12C3 17.52 6.84 22.61 12 24C17.16 22.61 21 17.52 21 12V6L12 2Z"
+                fill="url(#brand-grad)" />
+              <path d="M9.5 12.5L11 14L15 9.5" stroke="white" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <defs>
+                <linearGradient id="brand-grad" x1="3" y1="2" x2="21" y2="24" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#0284c7" />
+                  <stop stop-color="#0369a1" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <span class="brand-name"><span class="brand-slate">Intern</span><span class="brand-blue">Certify</span></span>
+        </a>
+        <span class="verification-live-pill" id="live-indicator">
+          <span class="live-dot"></span>
+          <span>ONLINE VERIFICATION</span>
+        </span>
+      </div>
+
+      <!-- Hamburger Menu Toggle Button -->
+      <button class="menu-toggle-btn" id="menu-btn" aria-label="Toggle navigation menu" aria-expanded="false"
+        aria-controls="mobile-drawer">
+        <span class="bar bar-1"></span>
+        <span class="bar bar-2"></span>
+        <span class="bar bar-3"></span>
+      </button>
+    </header>
+
+    <!-- Slide-over Navigation Drawer -->
+    <nav class="drawer-overlay" id="drawer-overlay" aria-hidden="true">
+      <div class="drawer-content" id="mobile-drawer">
+        <div class="drawer-header">
+          <div class="drawer-brand">
+            <span class="brand-name">Intern<span class="brand-highlight">Certify</span></span>
+            <small>Credential Trust Engine</small>
+          </div>
+          <button class="drawer-close-btn" id="drawer-close" aria-label="Close menu">&times;</button>
+        </div>
+
+        <div class="drawer-body">
+          <div class="drawer-section">
+            <h4 class="drawer-label">Quick Student Switcher</h4>
+            <p class="drawer-hint">Select a student record to preview verification parameters:</p>
+            <div class="student-quick-list" id="drawer-student-list">
+              <!-- Dynamically populated student items -->
+            </div>
+          </div>
+
+          <div class="drawer-divider"></div>
+
+          <ul class="drawer-nav-links">
+            <li>
+              <a href="#certificate-card" class="nav-link active" onclick="closeDrawer()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                Current Certificate
+              </a>
+            </li>
+            <li>
+              <a href="javascript:void(0)" class="nav-link" id="share-link-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                </svg>
+                Copy Direct Verification Link
+              </a>
+            </li>
+            <li>
+              <a href="javascript:void(0)" class="nav-link" onclick="window.print()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 6 2 18 2 18 9" />
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                  <rect x="6" y="14" width="12" height="8" />
+                </svg>
+                Print / Save PDF
+              </a>
+            </li>
+          </ul>
+
+          <div class="drawer-footer-note">
+            <div class="shield-badge-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#0284c7">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+              </svg>
+              <span>256-Bit Cryptographic Ledger</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Quick Demo Pill Switcher (Mobile & Desktop friendly bar) -->
+    <section class="demo-selector-bar" aria-label="Demo student selection">
+      <span class="selector-tag">Switch Student ID:</span>
+      <div class="pill-scroll-track" id="pill-switcher">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Main Content: Certificate Verification Card -->
+    <main class="certificate-wrapper">
+      <article class="certificate-card" id="certificate-card">
+
+        <!-- Official Security Border & Subtle Guilloche Pattern -->
+        <div class="card-security-line"></div>
+        <div class="certificate-watermark" aria-hidden="true">INTERNCERTIFY VERIFIED</div>
+
+        <!-- 2. Title: InternCertify Verified Certificate - [Student Name] -->
+        <header class="card-header">
+          <div class="cert-meta-top">
+            <span class="auth-id-badge" id="cert-registry-badge">CERT-ID: IC-721223205042</span>
+            <span class="security-status-tag">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              Authentic Record
+            </span>
+          </div>
+
+          <h1 class="certificate-title" id="cert-page-title">
+            InternCertify Verified Certificate - <span class="student-name-highlight" id="title-student-name">Rahul M</span>
+          </h1>
+        </header>
+
+        <!-- 3. Central Badge: A tilted green circular badge displaying "★ ★ ★ VERIFIED ★ ★ ★" -->
+        <div class="badge-showcase-container">
+          <div class="badge-orbit" aria-hidden="true"></div>
+
+          <div class="tilted-verified-badge" id="verified-badge" role="img"
+            aria-label="★ ★ ★ VERIFIED ★ ★ ★">
+            <!-- Badge Scalloped / Starburst Edge Effect -->
+            <div class="badge-outer-ring">
+              <div class="badge-inner-ring">
+
+                <!-- Top Arc of Stars: ★ ★ ★ -->
+                <div class="badge-stars-row stars-top" aria-hidden="true">
+                  <span class="star-icon">★</span>
+                  <span class="star-icon star-main">★</span>
+                  <span class="star-icon">★</span>
+                </div>
+
+                <!-- Central VERIFIED Text -->
+                <div class="badge-center-content">
+                  <div class="badge-icon-crest">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="badge-verified-text">VERIFIED</span>
+                  <span class="badge-subtext">AUTHENTICATED</span>
+                </div>
+
+                <!-- Bottom Arc of Stars: ★ ★ ★ -->
+                <div class="badge-stars-row stars-bottom" aria-hidden="true">
+                  <span class="star-icon">★</span>
+                  <span class="star-icon star-main">★</span>
+                  <span class="star-icon">★</span>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Authentic Seal Ribbons -->
+            <div class="badge-ribbon-left" aria-hidden="true"></div>
+            <div class="badge-ribbon-right" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <!-- 4. Heading: "🎉 CONGRATULATIONS 🎉" followed by "It's a verified certificate from Intern Certify" -->
+        <section class="congratulations-section">
+          <h2 class="congrats-heading" id="congrats-title">
+            <span class="emoji-left">🎉</span>
+            <span class="congrats-text">CONGRATULATIONS</span>
+            <span class="emoji-right">🎉</span>
+          </h2>
+          <p class="congrats-subtitle">
+            It's a verified certificate from <strong class="brand-emphasize">Intern Certify</strong>
+          </p>
+        </section>
+
+        <!-- 5. Information List (bulleted list format) -->
+        <section class="credentials-info-section" aria-label="Certificate Credentials Details">
+          <div class="section-badge-bar">
+            <span class="section-tag-label">CANDIDATE & COURSE CREDENTIALS</span>
+            <span class="timestamp-tag" id="verified-timestamp">Checked: Just Now</span>
+          </div>
+
+          <ul class="info-list" id="student-info-list">
+
+            <!-- Learner Full Name -->
+            <li class="info-list-item">
+              <span class="custom-bullet" aria-hidden="true"></span>
+              <div class="item-content-box">
+                <span class="item-label">Learner Full Name</span>
+                <span class="item-value" id="val-student-name">Rahul M</span>
+              </div>
+            </li>
+
+            <!-- Internship Course -->
+            <li class="info-list-item">
+              <span class="custom-bullet" aria-hidden="true"></span>
+              <div class="item-content-box">
+                <span class="item-label">Internship Course</span>
+                <span class="item-value course-val" id="val-course-name">Front end Development</span>
+              </div>
+            </li>
+
+            <!-- Duration -->
+            <li class="info-list-item">
+              <span class="custom-bullet" aria-hidden="true"></span>
+              <div class="item-content-box">
+                <span class="item-label">Duration</span>
+                <span class="item-value" id="val-duration">19-05-2026 to 17-06-2026</span>
+              </div>
+            </li>
+
+            <!-- Roll No -->
+            <li class="info-list-item">
+              <span class="custom-bullet" aria-hidden="true"></span>
+              <div class="item-content-box">
+                <span class="item-label">Roll No</span>
+                <div class="roll-number-container">
+                  <span class="item-value roll-highlight" id="val-roll-no">721223205042</span>
+                  <button class="copy-id-btn" id="copy-roll-btn" title="Copy Roll Number" aria-label="Copy roll number">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span class="copy-tooltip" id="copy-tooltip">Copied!</span>
+                  </button>
+                </div>
+              </div>
+            </li>
+
+            <!-- College -->
+            <li class="info-list-item">
+              <span class="custom-bullet" aria-hidden="true"></span>
+              <div class="item-content-box">
+                <span class="item-label">College</span>
+                <span class="item-value" id="val-college">Karpagam Institute of Technology</span>
+              </div>
+            </li>
+
+          </ul>
+        </section>
+
+        <!-- Digital Verification Seal & Dynamic QR Box -->
+        <section class="qr-verification-preview">
+          <div class="qr-code-frame">
+            <svg class="qr-svg-graphic" id="qr-code-graphic" viewBox="0 0 100 100" width="80" height="80">
+              <!-- Dynamically stylized QR matrix paths -->
+              <rect width="100" height="100" fill="#ffffff" rx="6" />
+              <!-- Corner finder 1 -->
+              <rect x="8" y="8" width="24" height="24" fill="#0f2d59" rx="3" />
+              <rect x="12" y="12" width="16" height="16" fill="#ffffff" rx="2" />
+              <rect x="16" y="16" width="8" height="8" fill="#0284c7" rx="1" />
+              <!-- Corner finder 2 -->
+              <rect x="68" y="8" width="24" height="24" fill="#0f2d59" rx="3" />
+              <rect x="72" y="12" width="16" height="16" fill="#ffffff" rx="2" />
+              <rect x="76" y="16" width="8" height="8" fill="#0284c7" rx="1" />
+              <!-- Corner finder 3 -->
+              <rect x="8" y="68" width="24" height="24" fill="#0f2d59" rx="3" />
+              <rect x="12" y="72" width="16" height="16" fill="#ffffff" rx="2" />
+              <rect x="16" y="76" width="8" height="8" fill="#0284c7" rx="1" />
+              <!-- Center code data cells -->
+              <rect x="38" y="12" width="6" height="6" fill="#0f2d59" />
+              <rect x="48" y="12" width="6" height="6" fill="#059669" />
+              <rect x="56" y="20" width="6" height="6" fill="#0f2d59" />
+              <rect x="38" y="38" width="24" height="24" fill="#059669" rx="2" />
+              <rect x="42" y="42" width="16" height="16" fill="#ffffff" rx="1" />
+              <circle cx="50" cy="50" r="4" fill="#059669" />
+              <rect x="14" y="40" width="8" height="8" fill="#0f2d59" />
+              <rect x="74" y="40" width="10" height="6" fill="#0284c7" />
+              <rect x="40" y="70" width="8" height="8" fill="#0f2d59" />
+              <rect x="54" y="76" width="12" height="6" fill="#059669" />
+              <rect x="74" y="70" width="8" height="8" fill="#0f2d59" />
+            </svg>
+            <div class="qr-scan-line"></div>
+          </div>
+          <div class="qr-info-meta">
+            <span class="qr-heading">Cryptographically Verified</span>
+            <span class="qr-sub">Scan to inspect official registry authenticity record</span>
+            <div class="qr-meta-pills">
+              <span class="qr-pill"><strong id="val-issue-date">Issued: Aug 2026</strong></span>
+              <span class="qr-pill status-ok">Status: Valid</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Footer Disclaimer & Angled Blue Bottom Footer Trim -->
+        <footer class="card-footer">
+          <!-- Shield security icon in brand blue theme -->
+          <div class="footer-security-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+          </div>
+
+          <p class="footer-disclaimer-text">
+            The details accessed via the QR code are secure and will only display the information related to the
+            learner's internship.
+          </p>
+
+          <!-- Angled Blue Bottom Footer Trim (Requested Requirement) -->
+          <div class="angled-blue-footer-trim" aria-hidden="true"></div>
+          <div class="angled-blue-corner" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <path d="M48 0L0 48H48V0Z" fill="url(#blue-corner-grad)" />
+              <path d="M48 18L18 48H48V18Z" fill="rgba(255, 255, 255, 0.22)" />
+              <path d="M48 34L34 48H48V34Z" fill="rgba(255, 255, 255, 0.38)" />
+              <defs>
+                <linearGradient id="blue-corner-grad" x1="0" y1="48" x2="48" y2="0" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#0a2540" />
+                  <stop offset="0.6" stop-color="#0284c7" />
+                  <stop offset="1" stop-color="#38bdf8" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </footer>
+
+      </article>
+
+      <!-- Bottom Interactive Action Toolbar -->
+      <aside class="action-toolbar">
+        <button class="btn-action btn-share" id="action-share-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+            <polyline points="16 6 12 2 8 6" />
+            <line x1="12" y1="2" x2="12" y2="15" />
+          </svg>
+          <span>Share Verification</span>
+        </button>
+        <button class="btn-action btn-print" onclick="window.print()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9" />
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+            <rect x="6" y="14" width="12" height="8" />
+          </svg>
+          <span>Print Certificate</span>
+        </button>
+      </aside>
+
+      <!-- Bottom Branding Footer -->
+      <footer class="app-bottom-copyright">
+        <p>&copy; 2026 InternCertify Technologies Ltd. Secured by ISO 27001 Certified Infrastructure.</p>
+        <div class="footer-links">
+          <a href="javascript:void(0)" onclick="openPrivacyModal()">Privacy Policy</a>
+          <span>&bull;</span>
+          <a href="javascript:void(0)" onclick="openVerificationGuide()">Verification Guide</a>
+          <span>&bull;</span>
+          <a href="javascript:void(0)" onclick="showStudentSwitcherModal()">Switch Record</a>
+        </div>
+      </footer>
+
+    </main>
+
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-box" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+
+</html>

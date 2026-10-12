@@ -1,0 +1,1355 @@
+/* ==========================================================================
+   InternCertify - Modern Mobile-First Certificate Verification Stylesheet
+   ========================================================================== */
+
+/* Design Tokens & CSS Custom Properties */
+:root {
+  /* Brand Palettes */
+  --color-primary: #0284c7;        /* Vibrant Sky Blue */
+  --color-primary-dark: #0369a1;
+  --color-primary-light: #e0f2fe;
+  
+  /* Bold Dark Blue for Certificate Title & Accents */
+  --color-dark-blue: #0a2540;      /* Required Bold Dark Blue */
+  --color-dark-blue-light: #163e6b;
+  --color-dark-blue-deep: #07192c;
+
+  /* Verified Emerald Green Badge Palette */
+  --color-badge-green: #059669;    /* Rich Emerald */
+  --color-badge-green-light: #10b981;
+  --color-badge-green-glow: rgba(16, 185, 129, 0.35);
+  --color-badge-gold: #fbbf24;     /* Star gold */
+
+  /* Neutral Surface & Typography */
+  --bg-canvas: #f8fafc;
+  --card-bg: #ffffff;
+  --text-heading: #0f172a;
+  --text-body: #334155;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --border-light: #e2e8f0;
+  --border-subtle: #f1f5f9;
+
+  /* Accents */
+  --accent-gold: #d97706;
+  --accent-purple: #6366f1;
+
+  /* Typography */
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-seal: 'Cinzel', serif;
+
+  /* Elevation Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.03);
+  --shadow-card: 0 20px 40px -15px rgba(10, 37, 64, 0.12), 0 0 1px 1px rgba(10, 37, 64, 0.04);
+  --shadow-badge: 0 12px 28px -4px rgba(5, 150, 105, 0.38), 0 4px 8px -2px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-canvas);
+  color: var(--text-body);
+  line-height: 1.55;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --------------------------------------------------------------------------
+   Ambient Background Design
+   -------------------------------------------------------------------------- */
+.bg-pattern {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.08) 0%, transparent 65%),
+    radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
+    radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 20px 20px;
+  pointer-events: none;
+  z-index: -2;
+}
+
+.glow-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.6;
+}
+
+.glow-top {
+  top: -100px;
+  right: -50px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(2, 132, 199, 0.15), rgba(16, 185, 129, 0.05));
+}
+
+.glow-bottom {
+  bottom: -80px;
+  left: -60px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.12), transparent);
+}
+
+/* --------------------------------------------------------------------------
+   Mobile-First Layout Container
+   -------------------------------------------------------------------------- */
+.app-container {
+  width: 100%;
+  max-width: 480px; /* REQUIRED: Mobile-first card container with maximum width of 480px */
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0 14px 32px 14px;
+  position: relative;
+}
+
+@media (min-width: 480px) {
+  .app-container {
+    padding: 0 16px 36px 16px;
+    max-width: 480px; /* Strict 480px maximum constraint */
+  }
+}
+
+/* --------------------------------------------------------------------------
+   1. Header: Brand Logo on Left & Hamburger Menu on Right
+   -------------------------------------------------------------------------- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  margin-bottom: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(248, 250, 252, 0.85);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.15), 0 0 0 1px rgba(2, 132, 199, 0.1);
+}
+
+.brand-name {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.brand-slate {
+  color: #1e293b; /* Dark slate text */
+}
+
+.brand-blue,
+.brand-highlight {
+  color: #0284c7; /* Blue text */
+}
+
+/* Live Online Status Pill */
+.verification-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #047857;
+  padding: 3px 8px;
+  border-radius: 100px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-badge-green-light);
+  animation: pulse-dot 1.8s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  70% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+@media (max-width: 440px) {
+  .verification-live-pill {
+    display: none; /* Keep clean on small mobile devices */
+  }
+}
+
+/* Hamburger Menu Toggle Button */
+.menu-toggle-btn {
+  width: 42px;
+  height: 42px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.menu-toggle-btn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.menu-toggle-btn .bar {
+  display: block;
+  width: 20px;
+  height: 2.2px;
+  background-color: var(--color-dark-blue);
+  border-radius: 2px;
+  transition: transform var(--transition-normal), opacity var(--transition-normal);
+}
+
+/* Hamburger animated state */
+.menu-toggle-btn.active .bar-1 {
+  transform: translateY(7.2px) rotate(45deg);
+}
+.menu-toggle-btn.active .bar-2 {
+  opacity: 0;
+}
+.menu-toggle-btn.active .bar-3 {
+  transform: translateY(-7.2px) rotate(-45deg);
+}
+
+/* --------------------------------------------------------------------------
+   Interactive Drawer (Mobile Navigation)
+   -------------------------------------------------------------------------- */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+}
+
+.drawer-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.drawer-content {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 86%;
+  max-width: 360px;
+  height: 100%;
+  background-color: #ffffff;
+  box-shadow: -8px 0 32px rgba(15, 23, 42, 0.2);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform var(--transition-bounce);
+}
+
+.drawer-overlay.open .drawer-content {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-light);
+  background: #f8fafc;
+}
+
+.drawer-brand small {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.drawer-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.drawer-close-btn:hover {
+  color: var(--text-heading);
+  background-color: var(--border-light);
+}
+
+.drawer-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.drawer-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary-dark);
+  margin-bottom: 6px;
+}
+
+.drawer-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.student-quick-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quick-student-card {
+  padding: 10px 12px;
+  background: #f8fafc;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+.quick-student-card:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  transform: translateX(3px);
+}
+
+.quick-student-card.active {
+  background: #eff6ff;
+  border-color: var(--color-primary);
+  border-left: 4px solid var(--color-primary);
+}
+
+.quick-student-card strong {
+  font-size: 0.88rem;
+  color: var(--text-heading);
+}
+
+.quick-student-card span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.drawer-divider {
+  height: 1px;
+  background-color: var(--border-light);
+  margin: 20px 0;
+}
+
+.drawer-nav-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  color: var(--text-body);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background var(--transition-fast);
+}
+
+.nav-link:hover, .nav-link.active {
+  background-color: #f1f5f9;
+  color: var(--color-primary);
+}
+
+.drawer-footer-note {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border-light);
+}
+
+.shield-badge-sm {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Quick Demo Switcher Bar (Horizontal scroll pills)
+   -------------------------------------------------------------------------- */
+.demo-selector-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0 16px 0;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+}
+
+.selector-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pill-scroll-track {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+
+.pill-scroll-track::-webkit-scrollbar {
+  display: none;
+}
+
+.student-pill {
+  padding: 4px 11px;
+  background: #f1f5f9;
+  color: var(--text-body);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.student-pill:hover {
+  background: #e2e8f0;
+  color: var(--color-dark-blue);
+}
+
+.student-pill.active {
+  background: var(--color-dark-blue);
+  color: #ffffff;
+  border-color: var(--color-dark-blue);
+  box-shadow: 0 2px 6px rgba(10, 37, 64, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   Main Certificate Card Component
+   -------------------------------------------------------------------------- */
+.certificate-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.certificate-card {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  padding: 24px 20px 20px 20px;
+  overflow: hidden;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+@media (min-width: 640px) {
+  .certificate-card {
+    padding: 32px 28px 24px 28px;
+    border-radius: 24px;
+  }
+}
+
+/* Official Security Border Strip (Guilloche Inspired Top Bar) */
+.card-security-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #0284c7 0%, #059669 40%, #10b981 70%, #0284c7 100%);
+}
+
+/* Watermark */
+.certificate-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-28deg);
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: rgba(10, 37, 64, 0.03);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  letter-spacing: 0.12em;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   2. Certificate Title: InternCertify Verified Certificate - [Student Name]
+   In bold dark blue text
+   -------------------------------------------------------------------------- */
+.card-header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.cert-meta-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.auth-id-badge {
+  font-family: 'SF Mono', Consolas, Monaco, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #f8fafc;
+  color: #475569;
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-light);
+  letter-spacing: 0.05em;
+}
+
+.security-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #047857;
+  background: #ecfdf5;
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid #a7f3d0;
+}
+
+/* REQUIRED: Title in bold dark blue text */
+.certificate-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 4.8vw, 1.55rem);
+  font-weight: 800; /* Bold */
+  color: var(--color-dark-blue); /* Dark Blue */
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  padding: 0 4px;
+  margin: 0 auto;
+  max-width: 95%;
+}
+
+.student-name-highlight {
+  color: var(--color-dark-blue); /* Retain bold dark blue identity */
+  background: linear-gradient(180deg, transparent 65%, rgba(2, 132, 199, 0.16) 65%);
+  padding: 0 4px;
+  border-radius: 4px;
+  display: inline;
+  transition: background var(--transition-fast);
+}
+
+/* --------------------------------------------------------------------------
+   3. Central Badge: A tilted green circular badge with "VERIFIED" and stars
+   -------------------------------------------------------------------------- */
+.badge-showcase-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 22px 0 24px 0;
+}
+
+/* Ambient glow ring around badge */
+.badge-orbit {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-badge-green-glow) 0%, transparent 70%);
+  filter: blur(10px);
+  animation: orbit-pulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes orbit-pulse {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  100% { transform: scale(1.15); opacity: 1; }
+}
+
+/* The Tilted Green Circular Badge */
+.tilted-verified-badge {
+  position: relative;
+  width: 122px;
+  height: 122px;
+  /* Distinct Tilt as required */
+  transform: rotate(-10deg);
+  cursor: default;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  filter: drop-shadow(0 10px 18px rgba(5, 150, 105, 0.38));
+  user-select: none;
+}
+
+.tilted-verified-badge:hover {
+  transform: rotate(-5deg) scale(1.05);
+  filter: drop-shadow(0 14px 24px rgba(5, 150, 105, 0.48));
+}
+
+/* Scalloped outer circle with rich gradient */
+.badge-outer-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  position: relative;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.25);
+  border: 2px dashed rgba(255, 255, 255, 0.6);
+}
+
+/* Crisp embossed inner circle */
+.badge-inner-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #059669 0%, #065f46 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+  text-align: center;
+}
+
+/* Stars Row (Top and Bottom) */
+.badge-stars-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  line-height: 1;
+}
+
+.star-icon {
+  color: var(--color-badge-gold);
+  font-size: 0.68rem;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
+  transition: transform var(--transition-fast);
+}
+
+.star-main {
+  font-size: 0.82rem;
+  transform: translateY(-1px);
+}
+
+.badge-center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1px 0;
+}
+
+.badge-icon-crest {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  margin-bottom: 1px;
+}
+
+.badge-icon-crest svg {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+/* "VERIFIED" Text */
+.badge-verified-text {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  line-height: 1.1;
+}
+
+.badge-subtext {
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #a7f3d0;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+
+/* Decorative ribbon tails hanging under badge */
+.badge-ribbon-left,
+.badge-ribbon-right {
+  position: absolute;
+  bottom: -14px;
+  width: 24px;
+  height: 28px;
+  background: linear-gradient(to bottom, #047857, #065f46);
+  z-index: -1;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 75%, 0% 100%);
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.badge-ribbon-left {
+  left: 20px;
+  transform: rotate(-15deg);
+}
+
+.badge-ribbon-right {
+  right: 20px;
+  transform: rotate(15deg);
+}
+
+/* --------------------------------------------------------------------------
+   4. Heading: "🎉 CONGRATULATIONS 🎉" followed by "It's a verified certificate from Intern Certify"
+   -------------------------------------------------------------------------- */
+.congratulations-section {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.congrats-heading {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+@media (min-width: 480px) {
+  .congrats-heading {
+    font-size: 1.55rem;
+  }
+}
+
+.emoji-left, .emoji-right {
+  display: inline-block;
+  font-size: 1.25rem;
+  animation: emoji-bounce 2s ease-in-out infinite;
+}
+
+.emoji-right {
+  animation-delay: 0.4s;
+}
+
+@keyframes emoji-bounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(8deg); }
+}
+
+.congrats-subtitle {
+  font-size: 0.96rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.brand-emphasize {
+  color: var(--color-dark-blue);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   5. Information List (bulleted list format)
+   - Learner Full Name
+   - Internship Course
+   - Duration
+   - Roll No
+   - College
+   -------------------------------------------------------------------------- */
+.credentials-info-section {
+  position: relative;
+  z-index: 1;
+  background: #f8fafc;
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 16px 14px;
+  margin-bottom: 18px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+@media (min-width: 480px) {
+  .credentials-info-section {
+    padding: 18px 20px;
+  }
+}
+
+.section-badge-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px dashed var(--border-light);
+}
+
+.section-tag-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--color-primary-dark);
+  text-transform: uppercase;
+}
+
+.timestamp-tag {
+  font-size: 0.7rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+/* Required Bulleted List Format */
+.info-list {
+  list-style-type: none; /* We use an explicit rich styled bullet to guarantee premium look while conforming to bulleted list semantics */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.info-list-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* Distinct Bullet Indicator */
+.custom-bullet {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  margin-top: 6px;
+  position: relative;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.18);
+  transition: transform var(--transition-fast);
+}
+
+.info-list-item:hover .custom-bullet {
+  transform: scale(1.3);
+  background-color: var(--color-badge-green);
+  box-shadow: 0 0 0 4px var(--color-badge-green-glow);
+}
+
+.item-content-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.item-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.course-val {
+  color: var(--color-dark-blue);
+  font-weight: 700;
+}
+
+/* Roll Number Row with Copy Utility */
+.roll-number-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.roll-highlight {
+  font-family: 'SF Mono', Consolas, Monaco, monospace;
+  font-weight: 700;
+  color: #0369a1;
+  background: #e0f2fe;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+}
+
+.copy-id-btn {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 3px 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.copy-id-btn:hover {
+  background: #f1f5f9;
+  color: var(--color-primary);
+  border-color: #94a3b8;
+}
+
+.copy-tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #0f172a;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  z-index: 10;
+}
+
+.copy-tooltip.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   QR Code Security Strip
+   -------------------------------------------------------------------------- */
+.qr-verification-preview {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+.qr-code-frame {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  background: #ffffff;
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.qr-svg-graphic {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.qr-scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #10b981, transparent);
+  box-shadow: 0 0 6px #10b981;
+  animation: qr-scan 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes qr-scan {
+  0% { top: 4px; opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { top: 68px; opacity: 0.2; }
+}
+
+.qr-info-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.qr-heading {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.qr-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.qr-meta-pills {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.qr-pill {
+  font-size: 0.68rem;
+  background: #f1f5f9;
+  color: var(--text-body);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.qr-pill.status-ok {
+  background: #ecfdf5;
+  color: #047857;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   6. Footer Disclaimer & Accent Decorative Corner at the Bottom
+   -------------------------------------------------------------------------- */
+.card-footer {
+  position: relative;
+  z-index: 1;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding-right: 48px; /* Leave space for the decorative corner */
+}
+
+.footer-security-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #e0f2fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* REQUIRED: Bottom italic security disclaimer */
+.footer-disclaimer-text {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  font-weight: 500;
+  font-style: italic; /* Explicit requirement: italic disclaimer */
+}
+
+/* REQUIRED: Angled cyan/blue gradient bottom trim */
+.angled-blue-footer-trim {
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
+  right: -20px;
+  height: 16px;
+  background: linear-gradient(90deg, #0a2540 0%, #0284c7 35%, #06b6d4 72%, #22d3ee 100%);
+  clip-path: polygon(0 60%, 100% 0%, 100% 100%, 0% 100%);
+  pointer-events: none;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  z-index: 4;
+}
+
+.angled-blue-corner {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+  border-bottom-right-radius: 20px;
+  transition: transform var(--transition-normal);
+}
+
+.certificate-card:hover .angled-blue-corner {
+  transform: scale(1.08);
+}
+
+/* --------------------------------------------------------------------------
+   Action Toolbar (Print, Share)
+   -------------------------------------------------------------------------- */
+.action-toolbar {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn-action {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  border: none;
+}
+
+.btn-share {
+  background-color: var(--color-dark-blue);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(10, 37, 64, 0.18);
+}
+
+.btn-share:hover {
+  background-color: #12375f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(10, 37, 64, 0.24);
+}
+
+.btn-print {
+  background-color: #ffffff;
+  color: var(--text-heading);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-print:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   Bottom Copyright & Legal
+   -------------------------------------------------------------------------- */
+.app-bottom-copyright {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.72rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.footer-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   Toast Notification Component
+   -------------------------------------------------------------------------- */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.toast {
+  background: rgba(15, 23, 42, 0.95);
+  color: #ffffff;
+  backdrop-filter: blur(8px);
+  padding: 10px 18px;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: toast-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.toast.fade-out {
+  animation: toast-out 0.25s ease forwards;
+}
+
+@keyframes toast-out {
+  to { opacity: 0; transform: translateY(8px) scale(0.95); }
+}
+
+/* --------------------------------------------------------------------------
+   Print Media Query (Clean Certificate Export)
+   -------------------------------------------------------------------------- */
+@media print {
+  body {
+    background: #ffffff !important;
+  }
+  .bg-pattern, .glow-orb, .site-header, .demo-selector-bar, .action-toolbar, .app-bottom-copyright, .toast-container {
+    display: none !important;
+  }
+  .app-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  .certificate-card {
+    box-shadow: none !important;
+    border: 2px solid #0a2540 !important;
+    page-break-inside: avoid;
+  }
+}
